@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
-const { JWT_SECRET = 'development-secret' } = process.env;
+const { JWT_SECRET = 'development-secret', NODE_ENV } = process.env;
 
 function createUser(req, res, next) {
   const { email, password, name } = req.body;
@@ -65,9 +65,13 @@ function updateUser(req, res, next) {
       }
     })
     .catch((e) => {
-      if (e.name === 'ValidationError' || e.name === 'CastError') {
+      if (e.name === 'ValidationError') {
         const err = new Error('Данные невалидны');
         err.statusCode = 400;
+        next(err);
+      } else if (e.name === 'MongoServerError' && e.code === 11000) {
+        const err = new Error('Пользователь с таким email уже существует');
+        err.statusCode = 409;
         next(err);
       } else next(e);
     });
@@ -99,6 +103,7 @@ function login(req, res, next) {
           res.cookie('jwt', token, {
             maxAge: 3600000,
             httpOnly: true,
+            secure: NODE_ENV === 'production',
           });
           res.status(200).send({ id });
         })

@@ -4,7 +4,7 @@ function getMovies(req, res, next) {
   const owner = req.user;
 
   Movie.find({ owner })
-    .then((movies) => res.status(200).send({ movies }))
+    .then((movies) => res.status(200).send([...movies]))
     .catch(next);
 }
 
@@ -23,14 +23,35 @@ function addMovie(req, res, next) {
     });
 }
 
-// Ошибка
 function deleteMovie(req, res, next) {
   const { movieId } = req.params;
   const owner = req.user;
 
-  Movie.deleteOne({ movieId, owner })
-    .then(() => req.status(200).send({ massage: 'Фильм удалён' }))
-    .catch(next);
+  Movie.findById(movieId)
+    .then((movie) => {
+      if (!movie) {
+        const err = new Error('Фильм ненайдена');
+        err.statusCode = 404;
+        throw err;
+      }
+
+      if (movie.owner.toString() === owner) {
+        Movie.findByIdAndDelete(movieId)
+          .then(() => res.status(200).send({ message: 'Фильм удален' }))
+          .catch(next);
+      } else {
+        const err = new Error('Нет прав для удаления');
+        err.statusCode = 403;
+        throw err;
+      }
+    })
+    .catch((e) => {
+      if (e.name === 'CastError') {
+        const err = new Error('ID невалиден');
+        err.statusCode = 400;
+        next(err);
+      } else next(e);
+    });
 }
 
 module.exports = {

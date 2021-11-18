@@ -24,17 +24,17 @@ const movieSchema = new mongoose.Schema({
   image: {
     type: String,
     required: true,
-    validate: {},
+    // validate: {},
   },
   trailer: {
     type: String,
     required: true,
-    validate: {},
+    // validate: {},
   },
   thumbnail: {
     type: String,
     required: true,
-    validate: {},
+    // validate: {},
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
