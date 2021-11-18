@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const { celebrate, Joi, errors } = require('celebrate');
@@ -16,7 +17,20 @@ mongoose.connect(BD_URL, {
   useNewUrlParser: true,
 });
 
+const options = {
+  origin: [
+    'http://localhost:3001',
+  ],
+  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+  allowedHeaders: ['Content-Type', 'origin', 'Authorization'],
+  credentials: true,
+};
+
 const app = express();
+
+app.use(cors(options));
 
 app.use(express.json());
 app.use(cookieParser());
