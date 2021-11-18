@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
@@ -9,7 +10,9 @@ const {
   createUser,
 } = require('./controllers/users');
 
-mongoose.connect('mongodb://localhost:27017/bitfilmsdb', {
+const { BD_URL = 'mongodb://localhost:27017/bitfilmsdb' } = process.env;
+
+mongoose.connect(BD_URL, {
   useNewUrlParser: true,
 });
 
@@ -40,17 +43,6 @@ app.use(require('./routers/index'));
 
 app.use(errorLogger);
 app.use(errors());
-app.use((err, req, res, next) => {
-  const { statusCode = 500, message } = err;
-
-  res.status(statusCode).send({
-    message: statusCode === 500
-      ? 'На сервере произошла ошибка'
-      : message,
-  });
-  if (statusCode === 500) console.log(`Ошибка ${err.name}: ${message}`);
-
-  next();
-});
+app.use(require('./middlewares/handlerErrors'));
 
 module.exports = app;
