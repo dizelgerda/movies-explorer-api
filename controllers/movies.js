@@ -30,7 +30,7 @@ function deleteMovie(req, res, next) {
   Movie.findById(movieId)
     .then((movie) => {
       if (!movie) {
-        const err = new Error('Фильм ненайдена');
+        const err = new Error('Фильм ненайден');
         err.statusCode = 404;
         throw err;
       }

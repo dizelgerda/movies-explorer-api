@@ -3,7 +3,9 @@ const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
+const helmet = require('helmet');
 const { celebrate, Joi, errors } = require('celebrate');
+const { optionsCORS } = require('./utils/constants');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const {
   login,
@@ -17,20 +19,10 @@ mongoose.connect(BD_URL, {
   useNewUrlParser: true,
 });
 
-const options = {
-  origin: [
-    'http://localhost:3001',
-  ],
-  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-  preflightContinue: false,
-  optionsSuccessStatus: 204,
-  allowedHeaders: ['Content-Type', 'origin', 'Authorization'],
-  credentials: true,
-};
-
 const app = express();
 
-app.use(cors(options));
+app.use(cors(optionsCORS));
+app.use(helmet());
 
 app.use(express.json());
 app.use(cookieParser());
