@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
+const { regUrl } = require('../utils/constants');
 const {
   getMovies,
   addMovie,
@@ -14,9 +15,9 @@ router.post('/', celebrate({
     duration: Joi.number().required(),
     year: Joi.string().required(),
     description: Joi.string().required(),
-    image: Joi.string().required(), // Придумать что-то с ссылками
-    trailer: Joi.string().required(), // Придумать что-то с ссылками
-    thumbnail: Joi.string().required(), // Придумать что-то с ссылками
+    image: Joi.string().required().pattern(regUrl),
+    trailer: Joi.string().required().pattern(regUrl),
+    thumbnail: Joi.string().required().pattern(regUrl),
     owner: Joi.string().required().min(24).max(24).hex(),
     movieId: Joi.number().required(),
     nameRU: Joi.string().required(),
