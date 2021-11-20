@@ -47,6 +47,12 @@ app.post('/signup', celebrate({
 app.use(require('./middlewares/auth'));
 app.use(require('./routers/index'));
 
+app.use('/', (req, res, next) => {
+  const err = new Error('Ресурс не найден');
+  err.statusCode = 404;
+  next(err);
+});
+
 app.use(errorLogger);
 app.use(errors());
 app.use(require('./middlewares/handlerErrors'));
