@@ -2,4 +2,4 @@
 api приложения Movies explorer
 
 Обратиться к серверу с api можно по адресу:
-https://kovalenko.diploma.nomoredomains.rocks
+https://api.kovalenko.diploma.nomoredomains.rocks
