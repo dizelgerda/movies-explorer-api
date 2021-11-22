@@ -18,12 +18,6 @@
           "_id"
         ]
       }
-    ],
-    "newline-per-chained-call": [
-      "error",
-      {
-        "ignoreChainWithDepth": 8
-      }
     ]
   }
 }

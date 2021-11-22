@@ -36,7 +36,7 @@ function deleteMovie(req, res, next) {
       }
 
       if (movie.owner.toString() === owner) {
-        Movie.findByIdAndDelete(movieId)
+        movie.remove()
           .then(() => res.status(200).send({ message: 'Фильм удален' }))
           .catch(next);
       } else {

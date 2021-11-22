@@ -27,7 +27,8 @@ function createUser(req, res, next) {
             next(err);
           } else next(e);
         });
-    });
+    })
+    .catch(next);
 }
 
 function getUser(req, res, next) {
@@ -69,7 +70,7 @@ function updateUser(req, res, next) {
         const err = new Error('Данные невалидны');
         err.statusCode = 400;
         next(err);
-      } else if (e.name === 'MongoServerError' && e.code === 11000) {
+      } else if (e.code === 11000) {
         const err = new Error('Пользователь с таким email уже существует');
         err.statusCode = 409;
         next(err);

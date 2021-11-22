@@ -1,5 +1,3 @@
-const regUrl = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([\\/\w.-]*)*\/?$/i;
-
 const optionsCORS = {
   origin: [
     'http://localhost:3001',
@@ -13,6 +11,5 @@ const optionsCORS = {
 };
 
 module.exports = {
-  regUrl,
   optionsCORS,
 };
