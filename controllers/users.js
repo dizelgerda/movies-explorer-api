@@ -99,7 +99,7 @@ function login(req, res, next) {
           const token = jwt.sign(
             { id },
             JWT_SECRET,
-            { expiresIn: '1d' },
+            { expiresIn: '7d' },
           );
           res.cookie('jwt', token, {
             maxAge: 3600000,
