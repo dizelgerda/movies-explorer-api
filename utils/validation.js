@@ -12,13 +12,9 @@ const validationAddMovie = celebrate({
       if (isURL(v)) return v;
       return h.message('Поле image заполнено некорректно');
     }),
-    trailer: Joi.string().required().custom((v, h) => {
+    trailerLink: Joi.string().required().custom((v, h) => {
       if (isURL(v)) return v;
       return h.message('Поле trailer заполнено некорректно');
-    }),
-    thumbnail: Joi.string().required().custom((v, h) => {
-      if (isURL(v)) return v;
-      return h.message('Поле thumbnail заполнено некорректно');
     }),
     movieId: Joi.number().required(),
     nameRU: Joi.string().required(),
